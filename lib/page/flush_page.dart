@@ -1,3 +1,4 @@
+import 'package:banaripara/page/dashbord.dart';
 import 'package:banaripara/page/login.dart';
 import 'package:banaripara/page/registration.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class FlushPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 35,
+                          fontSize: 38,
                           color: textColor1,
                           fontFamily: 'nameFont',
                           height: 1.2),
@@ -75,7 +76,7 @@ class FlushPage extends StatelessWidget {
                         width: size.width,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: backgroundColor3.withOpacity(0.9),
+                          color: buttonColor,
                           border: Border.all(
                             color: Colors.white,
                           ),
@@ -92,13 +93,12 @@ class FlushPage extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 5),
                           child: Row(
                             children: [
-                              // Register Button
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const Registration(),
+                                      builder: (context) => const Registration(), // Replace with your Registration screen
                                     ),
                                   );
                                 },
@@ -109,35 +109,34 @@ class FlushPage extends StatelessWidget {
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(15),
                                   ),
-                                  child: const Center(
+                                  child: Center(
                                     child: Text(
                                       "Register",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
-
+                                        color: textColor1,
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                               const Spacer(),
-                              // Sign In Text
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const Login(),
+                                      builder: (context) => const Login(), // Already provided in your code
                                     ),
                                   );
                                 },
-                                child: const Text(
-                                  "Log In",
+                                child: Text(
+                                  "Sign In",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
-
+                                    color: textColor1,
                                   ),
                                 ),
                               ),

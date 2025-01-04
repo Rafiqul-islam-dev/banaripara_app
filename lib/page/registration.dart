@@ -1,7 +1,6 @@
-
+import 'package:banaripara/page/login.dart';
 import 'package:flutter/material.dart';
-
-import '../Utils/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Registration extends StatefulWidget {
   const Registration({super.key});
@@ -11,148 +10,173 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _firestore = FirebaseFirestore.instance;
+
+  void _registerUser() async {
+    String name = _nameController.text.trim();
+    String phone = _phoneController.text.trim();
+    String password = _passwordController.text;
+
+    if (name.isEmpty || phone.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    if (!RegExp(r"^\d{11}$").hasMatch(phone)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid 11-digit phone number')),
+      );
+      return;
+    }
+
+    try {
+      await _firestore.collection('users').doc(phone).set({
+        'name': name,
+        'phone': phone,
+        'password': password,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Registration successful!')),
+      );
+
+      _nameController.clear();
+      _phoneController.clear();
+      _passwordController.clear();
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Login()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
             colors: [
-              backgroundColor2,
-              backgroundColor2,
-              backgroundColor4,
+              Colors.green[700]!,
+              Colors.red[600]!,
             ],
           ),
         ),
         child: SafeArea(
-            child: ListView(
-              children: [
-                SizedBox(height: size.height * 0.03),
-                Text(
-                  "Hello Again!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 37,
-                    color: textColor1,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
                   ),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  "Wellcome back vou've\nbeen missed!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 27, color: textColor2, height: 1.2),
-                ),
-                SizedBox(height: size.height * 0.04),
-                // for username and password
-                myTextField("Enter Your Name", Colors.white),
-                myTextField("Enter Email or Phone", Colors.white),
-                myTextField("Password", Colors.black26),
-                const SizedBox(height: 10),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Column(
-                    children: [
-                      // for sign in button
-                      Container(
-                        width: size.width,
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          color: buttonColor,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Sign In",
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 40),
+                          // Logo
+                          Image.asset(
+                            'images/logoBana.png',
+                            width: 150,
+                            height: 150,
+                          ),
+                          const SizedBox(height: 20),
+                          // Bengali Text
+                          const Text(
+                            'আমাদের বানারীপাড়া',
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontSize: 22,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'nameFont'
                             ),
                           ),
-                        ),
-                      ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 1,
-                            width: size.width * 0.2,
-                            color: Colors.black12,
+                          const SizedBox(height: 10),
+                          const Text(
+                            'আমাদের বানারীপাড়া অ্যাপটি আপনার জন্য,তাই\nএই অ্যাপের সেবা নিতে রেজিস্ট্রেশন করুন',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                                fontFamily: 'textFont',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-
+                          const SizedBox(height: 40),
+                          // Input Fields
+                          _buildTextField("Enter Your Name", Icons.person, _nameController),
+                          const SizedBox(height: 20),
+                          _buildTextField("Enter Email or Phone", Icons.email, _phoneController),
+                          const SizedBox(height: 20),
+                          _buildTextField("Password", Icons.lock, _passwordController, isPassword: true),
+                          const SizedBox(height: 30),
+                          // Sign Up Button
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: _registerUser,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.blue[700],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+                              child: const Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Spacer(), // This will push everything up and fill the remaining space
                         ],
                       ),
-                      SizedBox(height: size.height * 0.04),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          socialIcon("images/google.png"),
-                          socialIcon("images/apple.png"),
-                          socialIcon("images/facebook.png"),
-                        ],
-                      ),
-
-                    ],
+                    ),
                   ),
                 ),
-              ],
-            )),
-      ),
-    );
-  }
-
-  Container socialIcon(image) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 32,
-        vertical: 15,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.white,
-          width: 2,
+              );
+            },
+          ),
         ),
       ),
-      child: Image.asset(
-        image,
-        height: 35,
-      ),
     );
   }
 
-  Container myTextField(String hint, Color color) {
+  Widget _buildTextField(String hint, IconData icon, TextEditingController controller, {bool isPassword = false}) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25,
-        vertical: 10,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(25),
       ),
       child: TextField(
+        controller: controller,
+        obscureText: isPassword,
+        style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 22,
-            ),
-            fillColor: Colors.white,
-            filled: true,
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            hintText: hint,
-            hintStyle: const TextStyle(
-              color: Colors.black45,
-              fontSize: 19,
-            ),
-            suffixIcon: Icon(
-              Icons.visibility_off_outlined,
-              color: color,
-            )),
+          prefixIcon: Icon(icon, color: Colors.white70),
+          hintText: hint,
+          hintStyle: const TextStyle(color: Colors.white70),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        ),
       ),
     );
   }

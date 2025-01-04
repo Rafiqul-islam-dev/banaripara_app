@@ -1,7 +1,11 @@
 import 'package:banaripara/page/about_banaripara.dart';
 import 'package:banaripara/page/admin_info.dart';
+import 'package:banaripara/page/baripara_school_college.dart';
+import 'package:banaripara/page/fireservice.dart';
 import 'package:banaripara/widgets/app_drawer.dart';
 import 'package:banaripara/widgets/carousel_widget.dart';
+import 'package:banaripara/widgets/custom_bottom_nav_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:banaripara/page/doctor_page.dart';
 
@@ -13,9 +17,11 @@ class Dashbord extends StatefulWidget {
 }
 
 class _DashbordState extends State<Dashbord> {
+  int _selectedIndex = 0;
   final List<String> bannerImages = [
-    'https://i.ibb.co/X2fc1Nj/267525004-1340441659706313-8678375803736625064-n.jpg',
-    'https://i.ibb.co/HXnmBGm/461178613-3371822983120999-5428225248020846696-n.jpg'
+    'https://styrenebd.com/asset/image1.jpg',
+    'https://styrenebd.com/asset/image2.jpg',
+    'https://styrenebd.com/asset/image.jpg',
   ];
 
   final List<Map<String, dynamic>> menuItems = [
@@ -25,7 +31,7 @@ class _DashbordState extends State<Dashbord> {
     {"title": "দর্শনীয় স্থান", "image": "images/icon/sightseeing.png", "page": DoctorPage()},
     {"title": "বাসা ভাড়া", "image": "images/icon/house.png", "page": DoctorPage()},
     {"title": "শপিং", "image": "images/icon/online-shopping.png", "page": DoctorPage()},
-    {"title": "ফায়ার সার্ভিস", "image": "images/icon/firetruck.png", "page": DoctorPage()},
+    {"title": "ফায়ার সার্ভিস", "image": "images/icon/firetruck.png", "page": Fireservice()},
     {"title": "কুরিয়ার সার্ভিস", "image": "images/icon/delivery.png", "page": DoctorPage()},
     {"title": "থানা-পুলিশ", "image": "images/icon/policeman.png", "page": DoctorPage()},
     {"title": "ওয়েবসাইট", "image": "images/icon/world-wide-web.png", "page": DoctorPage()},
@@ -44,9 +50,26 @@ class _DashbordState extends State<Dashbord> {
     {"title": "ফ্লাট ও জমি", "image": "images/icon/architect.png", "page": DoctorPage()},
     {"title": "ভিডিও দেখুন", "image": "images/icon/youtube.png", "page": DoctorPage()},
     {"title": "পত্রিকা", "image": "images/icon/newspaper.png", "page": DoctorPage()},
-    {"title": "শিক্ষা প্রতিষ্ঠান", "image": "images/icon/school.png", "page": DoctorPage()},
+    {"title": "শিক্ষা প্রতিষ্ঠান", "image": "images/icon/school.png", "page": BanariparaSchoolCollege()},
     {"title": "নার্সারি", "image": "images/icon/forest.png", "page": DoctorPage()},
   ];
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void _logout(BuildContext context) async {
+    try {
+      await _auth.signOut(); // Signs out the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Successfully logged out')),
+      );
+      // Redirect to the login page after logging out
+      Navigator.pushReplacementNamed(context, '/login'); // Assuming '/login' is your login page route
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
 
   @override
 
@@ -55,7 +78,7 @@ class _DashbordState extends State<Dashbord> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "আমাদের বানারীপাড়",
+          "আমাদের বানারীপাড়া",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 22,
@@ -63,6 +86,12 @@ class _DashbordState extends State<Dashbord> {
           ),
         ),
         backgroundColor: Colors.green,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => _logout(context), // Call the logout method on button press
+          ),
+        ],
       ),
       drawer: const AppDrawer(),
       body: Column(
@@ -97,7 +126,7 @@ class _DashbordState extends State<Dashbord> {
                             ),
                           );
                         },
-                        child: _buildCard("এডমিনদের পরিচিতি", "images/logoBana.png"),
+                        child: _buildCard("এডমিনদের পরিচিতি", "images/admin.png"),
                       ),
                     ],
                   ),
@@ -159,28 +188,12 @@ class _DashbordState extends State<Dashbord> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "হোম",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.phone),
-            label: "যোগাযোগ",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: "নোটিফিকেশন",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "প্রোফাইল",
-          ),
-        ],
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
+      bottomNavigationBar: CustomBottomNavBar(
+        currentIndex: _selectedIndex, // Add this state variable
+        onTap: (index) {
+          setState(() => _selectedIndex = index);
+          // Add navigation logic here
+        },
       ),
     );
   }

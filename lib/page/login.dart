@@ -1,7 +1,8 @@
-import 'package:banaripara/page/dashbord.dart';
+import 'package:banaripara/page/registration.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:banaripara/page/dashbord.dart';
 
-import '../Utils/colors.dart';
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -10,196 +11,217 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _firestore = FirebaseFirestore.instance;
+
+  void _loginUser() async {
+    String username = _usernameController.text.trim();
+    String password = _passwordController.text;
+
+    if (username.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    try {
+      DocumentSnapshot userDoc =
+      await _firestore.collection('users').doc(username).get();
+
+      if (userDoc.exists) {
+        String storedPassword = userDoc['password'];
+        if (password == storedPassword) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login successful!')),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const Dashbord()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Invalid password')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User not found')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
-            colors: [
-              backgroundColor2,
-              backgroundColor2,
-              backgroundColor4,
-            ],
+            end: Alignment.bottomCenter,
+            colors: [Colors.green[400]!, Colors.red[400]!],
           ),
         ),
         child: SafeArea(
-            child: ListView(
-              children: [
-                SizedBox(height: size.height * 0.05),
-                Text(
-                  "আমাদের বানারীপাড়া",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 37,
-                    fontFamily: 'nameFont',
-                    color: textColor1,
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  "Wellcome back",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 27, color: textColor2, height: 1.2),
-                ),
-                SizedBox(height: size.height * 0.04),
-                // for username and password
-                myTextField("Enter username", Colors.white),
-                myTextField("Password", Colors.black26),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    "Recovery Password               ",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: textColor2,
+          child: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      'আমাদের বানারীপাড়া',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontFamily: 'nameFont',
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ),
-                SizedBox(height: size.height * 0.04),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Column(
-                    children: [
-                      // for sign in button
-                      Container(
-                        width: size.width,
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          color: buttonColor,
-                          borderRadius: BorderRadius.circular(15),
+                    const SizedBox(height: 20),
+                    Image.asset(
+                      'images/logoBana.png',
+                      width: 120,
+                      height: 120,
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'আপনার রেজিস্টার করা মোবাইল নাম্বার এবং পাসওয়ার্ড দিয়ে লগইন করুন',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontFamily: 'textFont',
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 40),
+                    // Username TextField
+                    _buildTextField(
+                      controller: _usernameController,
+                      hintText: 'Enter username',
+                    ),
+                    const SizedBox(height: 16),
+                    // Password TextField
+                    _buildTextField(
+                      controller: _passwordController,
+                      hintText: 'Password',
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 12),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Recovery Password',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
                         ),
-                        child: GestureDetector(
-                          onTap: () {
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    // Login Button
+                    ElevatedButton(
+                      onPressed: _loginUser,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF6B6B),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Not a member? ',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        TextButton(
+                          onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Dashbord()),
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const Registration()),
                             );
                           },
-
-                          child: Text(
-                            "Login",
-                            textAlign: TextAlign.center,
+                          child: const Text(
+                            'Register now',
                             style: TextStyle(
+                              color: Colors.black,
                               fontWeight: FontWeight.bold,
-                              color: backgroundColor1,
-                              fontSize: 22,
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: size.height * 0.06),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 2,
-                            width: size.width * 0.2,
-                            color: Colors.black12,
-                          ),
-                          Text(
-                            "  Or continue with   ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: textColor2,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Container(
-                            height: 2,
-                            width: size.width * 0.2,
-                            color: Colors.black12,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: size.height * 0.06),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          socialIcon("images/google.png"),
-                          socialIcon("images/apple.png"),
-                          socialIcon("images/facebook.png"),
-                        ],
-                      ),
-                      SizedBox(height: size.height * 0.07),
-                      Text.rich(
-                        TextSpan(
-                            text: "Not a member? ",
-                            style: TextStyle(
-                              color: textColor2,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                            children: const [ TextSpan(
-                              text: "Register now",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),)]
-                        ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            )),
-      ),
-    );
-  }
-
-  Container socialIcon(image) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 32,
-        vertical: 15,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.white,
-          width: 2,
+              ),
+            ),
+          ),
         ),
       ),
-      child: Image.asset(
-        image,
-        height: 35,
-      ),
     );
   }
 
-  Container myTextField(String hint, Color color) {
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    bool obscureText = false,
+  }) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25,
-        vertical: 10,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: TextField(
+        controller: controller,
+        obscureText: obscureText,
         decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 22,
-            ),
-            fillColor: Colors.white,
-            filled: true,
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            hintText: hint,
-            hintStyle: const TextStyle(
-              color: Colors.black45,
-              fontSize: 19,
-            ),
-            suffixIcon: Icon(
-              Icons.visibility_off_outlined,
-              color: color,
-            )),
+          hintText: hintText,
+          hintStyle: TextStyle(color: Colors.grey[400]),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.all(20),
+        ),
       ),
     );
   }

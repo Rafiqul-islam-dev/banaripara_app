@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "909376539195",
+    "project_id": "banaripara",
+    "storage_bucket": "banaripara.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909376539195:android:e15bb9993d1a6a8a892a1e",
+        "android_client_info": {
+          "package_name": "com.example.banaripara"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmCYZToa4HQlaWmkN2PLGGYYGvqg2EAfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
