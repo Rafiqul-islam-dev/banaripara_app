@@ -2,6 +2,7 @@ import 'package:banaripara/page/registration.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:banaripara/page/dashbord.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -15,13 +16,18 @@ class _LoginState extends State<Login> {
   final _passwordController = TextEditingController();
   final _firestore = FirebaseFirestore.instance;
 
+  Future<void> _savePhoneNumber(String phoneNumber) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_phone', phoneNumber);
+  }
+
   void _loginUser() async {
     String username = _usernameController.text.trim();
     String password = _passwordController.text;
 
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields')),
+        const SnackBar(content: Text('Please fill in all fields'), backgroundColor: Colors.orange,),
       );
       return;
     }
@@ -33,8 +39,11 @@ class _LoginState extends State<Login> {
       if (userDoc.exists) {
         String storedPassword = userDoc['password'];
         if (password == storedPassword) {
+          // Save phone number to session before navigation
+          await _savePhoneNumber(username);
+
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Login successful!')),
+            const SnackBar(content: Text('Login successful!', style: TextStyle(color: Colors.white),), backgroundColor: Colors.green,),
           );
           Navigator.pushReplacement(
             context,
@@ -42,17 +51,17 @@ class _LoginState extends State<Login> {
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Invalid password')),
+            const SnackBar(content: Text('Invalid password'), backgroundColor: Colors.red,),
           );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User not found')),
+          const SnackBar(content: Text('User not found'), backgroundColor: Colors.red,),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
+        SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red,),
       );
     }
   }
@@ -75,11 +84,16 @@ class _LoginState extends State<Login> {
                 minHeight: MediaQuery.of(context).size.height,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Image.asset(
+                      'images/logoBana.png',
+                      width: 150,
+                      height: 150,
+                    ),
                     const Text(
                       'আমাদের বানারীপাড়া',
                       style: TextStyle(
@@ -89,12 +103,6 @@ class _LoginState extends State<Login> {
                         fontFamily: 'nameFont',
                       ),
                       textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    Image.asset(
-                      'images/logoBana.png',
-                      width: 120,
-                      height: 120,
                     ),
                     const SizedBox(height: 8),
                     const Text(
@@ -111,7 +119,7 @@ class _LoginState extends State<Login> {
                     // Username TextField
                     _buildTextField(
                       controller: _usernameController,
-                      hintText: 'Enter username',
+                      hintText: 'Enter phone number',
                     ),
                     const SizedBox(height: 16),
                     // Password TextField
@@ -120,20 +128,7 @@ class _LoginState extends State<Login> {
                       hintText: 'Password',
                       obscureText: true,
                     ),
-                    const SizedBox(height: 12),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Recovery Password',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ),
+
                     const SizedBox(height: 24),
                     // Login Button
                     ElevatedButton(

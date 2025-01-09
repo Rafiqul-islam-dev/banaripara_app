@@ -1,8 +1,5 @@
-import 'package:banaripara/page/dashbord.dart';
-import 'package:banaripara/page/login.dart';
-import 'package:banaripara/page/registration.dart';
+
 import 'package:flutter/material.dart';
-import '../Utils/colors.dart';
 
 class FlushPage extends StatelessWidget {
   const FlushPage({super.key});
@@ -12,32 +9,38 @@ class FlushPage extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        color: backgroundColor1,
+        color: Color(0xffE9EAF7),
         height: size.height,
         width: size.width,
         child: Stack(
           children: [
-                Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  height: size.height * 0.55,
-                  width: size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(40),
-                      bottomRight: Radius.circular(40),
-                    ),
-                    color: dark,
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: size.height * 0.55,
+                width: size.width,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
                   ),
-                  child: Center(
-                    child: Image.asset(
-                      "images/logoBana.png",
-                      height: 350, // Set fixed height
-                      width: 350,  // Set fixed width
-                    ),
+                  color: Color(0xFF263238),
+                ),
+                child: Center(
+                  child: Image.asset(
+                    "images/logoBana.png",
+                    height: 320,
+                    width: 320,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Text(
+                        'Image not found',
+                        style: TextStyle(color: Colors.red),
+                      );
+                    },
                   ),
                 ),
               ),
+            ),
             Positioned(
               top: size.height * 0.6,
               left: 0,
@@ -49,11 +52,12 @@ class FlushPage extends StatelessWidget {
                       "আমাদের বানারীপাড়া Our Banaripara",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 38,
-                          color: textColor1,
-                          fontFamily: 'nameFont',
-                          height: 1.2),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 34,
+                        color: Colors.black,
+                        fontFamily: 'nameFont',
+                        height: 1.2,
+                      ),
                     ),
                     const SizedBox(height: 25),
                     Text(
@@ -62,23 +66,21 @@ class FlushPage extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: textColor2,
+                        color: Colors.black,
                         fontFamily: 'textFont',
                       ),
                     ),
                     SizedBox(height: size.height * 0.03),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Container(
                         height: size.height * 0.08,
                         width: size.width,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: buttonColor,
+                          color: Colors.lightGreen,
                           border: Border.all(
-                            color: Colors.white,
+                            color: Colors.lightGreen,
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -89,60 +91,47 @@ class FlushPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 5),
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Registration(), // Replace with your Registration screen
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  height: size.height * 0.08,
-                                  width: size.width / 2.2,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Register",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: textColor1,
-                                      ),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/signup');
+                              },
+                              child: Container(
+                                height: size.height * 0.08,
+                                width: size.width / 2.2,
+                                decoration: BoxDecoration(
+                                  color: Colors.redAccent,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Register",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
                               ),
-                              const Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Login(), // Already provided in your code
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  "Sign In",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: textColor1,
-                                  ),
+                            ),
+                            const Spacer(),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/login');
+                              },
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white,
                                 ),
                               ),
-                              const Spacer(),
-                            ],
-                          ),
+                            ),
+                            const Spacer(),
+                          ],
                         ),
                       ),
                     ),
@@ -156,3 +145,4 @@ class FlushPage extends StatelessWidget {
     );
   }
 }
+

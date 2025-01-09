@@ -8,18 +8,195 @@ class BanariParaDetails extends StatefulWidget {
   @override
   State<BanariParaDetails> createState() => _BanariParaDetailsState();
 }
+class StatsSection extends StatelessWidget {
+  const StatsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: ExpansionTile(
+        title: const Text(
+          'বানারীপাড়ার পরিসংখ্যান',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
+            fontFamily: 'textFont',
+          ),
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                _buildStatRow('জেলা সদর হতে দূরত্ব', '২৭ কি:মি:'),
+                _buildStatRow('আয়তন', '১০৪/৮৬ বর্গ কিলোমিটার'),
+                _buildStatRow('জনসংখ্যা', '১,৩০,৪৯৮ জন (প্রায়)'),
+                _buildPopulationStats(),
+                _buildStatRow('লোক সংখ্যার ঘনত্ব', '১৮৮৯ (প্রতি বর্গ কিলোমিটারে)'),
+                _buildStatRow('মোট ভোটার সংখ্যা', '৯০৪৬১ জন'),
+                _buildVoterStats(),
+                _buildStatRow('সাক্ষরতা হার', '৭০.৬১%'),
+                _buildInfrastructureStats(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 16,
+                fontFamily: 'textFont',
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'textFont',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPopulationStats() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            'জনসংখ্যা:',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'textFont',
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Column(
+            children: [
+              _buildStatRow('পুরুষ', '৮১২৫৫ জন (প্রায়)'),
+              _buildStatRow('মহিলা', '৭৯২৭৫ জন (প্রায়)'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildVoterStats() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            'ভোটার:',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'textFont',
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Column(
+            children: [
+              _buildStatRow('পুরুষ ভোটার', '৪৬১১৩ জন'),
+              _buildStatRow('মহিলা ভোটার', '৪৭২৪৬ জন'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfrastructureStats() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            'পরিকাঠামো:',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'textFont',
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Column(
+            children: [
+              _buildStatRow('ইউনিয়ন', '৮ টি'),
+              _buildStatRow('পৌরসভা', '১ টি'),
+              _buildStatRow('গ্রাম', '৭৯ টি'),
+              _buildStatRow('মৌজা', '৭৯ টি'),
+              _buildStatRow('হাট-বাজার', '২৩ টি'),
+              _buildStatRow('ব্যাংক শাখা', '১০ টি'),
+              _buildStatRow('পোস্ট অফিস/সাব', '১৫ টি'),
+              _buildStatRow('টেলিফোন এক্সচেঞ্জ', '১ টি'),
+              _buildStatRow('ক্ষুদ্র কুটির শিল্প', '১০৬ টি'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 
 class _BanariParaDetailsState extends State<BanariParaDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("আমাদের বানারীপাড়া"),
+        title: const Text(
+          "আমাদের বানারীপাড়া",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.green,
       ),
       drawer: const AppDrawer(),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(10),
 
         children: [
           const Padding(
@@ -39,6 +216,7 @@ class _BanariParaDetailsState extends State<BanariParaDetails> {
             ),
           ),
           // Image with description card
+          StatsSection(),
           Card(
             elevation: 4,
             shape: RoundedRectangleBorder(

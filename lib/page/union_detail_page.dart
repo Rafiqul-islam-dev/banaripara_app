@@ -8,7 +8,7 @@ class UnionDetailPage extends StatelessWidget {
 
   Widget _buildInfoSection(String title, String value) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 3.0),
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -30,7 +30,7 @@ class UnionDetailPage extends StatelessWidget {
               title,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 18,
                 fontFamily: 'textFont',
                 color: Colors.green,
               ),
@@ -39,7 +39,7 @@ class UnionDetailPage extends StatelessWidget {
           const Text(
             ":",
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 18,
               color: Colors.green,
               fontWeight: FontWeight.bold,
             ),
@@ -51,7 +51,7 @@ class UnionDetailPage extends StatelessWidget {
             child: Text(
               value,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 17,
                 fontFamily: 'textFont',
                 color: Colors.black87,
               ),
@@ -79,7 +79,7 @@ class UnionDetailPage extends StatelessWidget {
             title,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 23,
+              fontSize: 20,
               color: Colors.green,
               fontFamily: 'textFont',
             ),
@@ -93,7 +93,7 @@ class UnionDetailPage extends StatelessWidget {
                 const Text(
                   "•",
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 20,
                     color: Colors.green,
                     fontWeight: FontWeight.bold,
                   ),
@@ -103,7 +103,7 @@ class UnionDetailPage extends StatelessWidget {
                   child: Text(
                     item,
                     style: const TextStyle(
-                      fontSize: 22,
+                      fontSize: 18,
                       fontFamily: 'textFont',
                     ),
                   ),

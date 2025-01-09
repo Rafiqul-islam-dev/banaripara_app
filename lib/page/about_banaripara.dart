@@ -1,5 +1,7 @@
 import 'package:banaripara/page/banaripara_details.dart';
 import 'package:banaripara/page/banaripara_freedom_fighter.dart';
+import 'package:banaripara/page/banaripara_hatbazar.dart';
+import 'package:banaripara/page/banaripara_important_person.dart';
 import 'package:banaripara/page/banaripara_map.dart';
 import 'package:banaripara/page/banaripara_municipality.dart';
 import 'package:banaripara/page/banaripara_union.dart';
@@ -32,11 +34,10 @@ class _AboutBanariparaState extends State<AboutBanaripara> {
     {'title': "পৌরসভা", 'icon': Icons.apartment, 'page': const BanariparaMunicipality()},
     {'title': "জনপ্রতিনিধি", 'icon': Icons.people, 'page': const Placeholder()},
     {'title': "ইউনিয়ন", 'icon': Icons.public, 'page': const BanariparaUnion()},
-    {'title': "গ্রাম", 'icon': Icons.terrain, 'page': const Placeholder()},
     {'title': "সরকারী অফিস", 'icon': Icons.business, 'page': const Placeholder()},
     {'title': "শিক্ষা প্রতিষ্ঠান", 'icon': Icons.school, 'page': const BanariparaSchoolCollege()},
-    {'title': "প্রখ্যাত ব্যাক্তিত্ব", 'icon': Icons.star, 'page': const Placeholder()},
-    {'title': "হাট-বাজার", 'icon': Icons.shopping_cart, 'page': const Placeholder()},
+    {'title': "প্রখ্যাত ব্যাক্তিত্ব", 'icon': Icons.star, 'page': const BanariparaImportantPerson()},
+    {'title': "হাট-বাজার", 'icon': Icons.shopping_cart, 'page': const BanariparaHatBazar()},
   ];
 
   int _selectedIndex = 0; // Move this to the class level for state management
@@ -55,7 +56,10 @@ class _AboutBanariparaState extends State<AboutBanaripara> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("আমাদের বানারীপাড়া"),
+        title: const Text(
+          "আমাদের বানারীপাড়া",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.green,
       ),
       drawer: const AppDrawer(),

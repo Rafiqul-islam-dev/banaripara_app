@@ -1,5 +1,7 @@
 import 'package:banaripara/page/about_banaripara.dart';
 import 'package:banaripara/page/admin_info.dart';
+import 'package:banaripara/page/allpage/bus.dart';
+import 'package:banaripara/page/allpage/hospital.dart';
 import 'package:banaripara/page/baripara_school_college.dart';
 import 'package:banaripara/page/fireservice.dart';
 import 'package:banaripara/widgets/app_drawer.dart';
@@ -26,8 +28,8 @@ class _DashbordState extends State<Dashbord> {
 
   final List<Map<String, dynamic>> menuItems = [
     {"title": "ডাক্তার", "image": "images/icon/doctor.png", "page": DoctorPage()},
-    {"title": "হাসপাতাল", "image": "images/icon/hospital.png", "page": DoctorPage()},
-    {"title": "বাসের সময়সূচি", "image": "images/icon/bus.png", "page": DoctorPage()},
+    {"title": "হাসপাতাল", "image": "images/icon/hospital.png", "page": Hospital()},
+    {"title": "বাসের সময়সূচি", "image": "images/icon/bus.png", "page": Bus()},
     {"title": "দর্শনীয় স্থান", "image": "images/icon/sightseeing.png", "page": DoctorPage()},
     {"title": "বাসা ভাড়া", "image": "images/icon/house.png", "page": DoctorPage()},
     {"title": "শপিং", "image": "images/icon/online-shopping.png", "page": DoctorPage()},
@@ -137,8 +139,8 @@ class _DashbordState extends State<Dashbord> {
                     padding: const EdgeInsets.all(10),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
+                      crossAxisSpacing:9,
+                      mainAxisSpacing: 5,
                       childAspectRatio: 0.9,
                     ),
                     itemCount: menuItems.length,
@@ -155,15 +157,15 @@ class _DashbordState extends State<Dashbord> {
                         child: Card(
                           elevation: 2,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
                                 menuItems[index]["image"],
-                                height: 60,
-                                width: 60,
+                                height: 50,
+                                width: 50,
                                 fit: BoxFit.cover,
                               ),
                               const SizedBox(height: 8),
@@ -171,7 +173,7 @@ class _DashbordState extends State<Dashbord> {
                                 menuItems[index]["title"],
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'textFont',
                                 ),
@@ -202,7 +204,7 @@ class _DashbordState extends State<Dashbord> {
     return Card(
       elevation: 3,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.4,
@@ -212,8 +214,8 @@ class _DashbordState extends State<Dashbord> {
           children: [
             Image.asset(
               imagePath,
-              height: 70, // Adjust as needed
-              width: 70,  // Adjust as needed
+              height: 60, // Adjust as needed
+              width: 60,  // Adjust as needed
               fit: BoxFit.cover,
             ),
             const SizedBox(height: 8),

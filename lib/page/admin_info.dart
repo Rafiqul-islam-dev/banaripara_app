@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/app_drawer.dart';
+
 class AdminInfo extends StatefulWidget {
   const AdminInfo({super.key});
 
@@ -10,6 +12,15 @@ class AdminInfo extends StatefulWidget {
 class _AdminInfoState extends State<AdminInfo> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            "আমাদের বানারীপাড়া",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+    backgroundColor: Colors.green,
+    ),
+    drawer: const AppDrawer(),
+    );
   }
 }

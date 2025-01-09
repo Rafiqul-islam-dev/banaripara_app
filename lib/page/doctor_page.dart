@@ -116,7 +116,7 @@ class _DoctorPageState extends State<DoctorPage> {
             child: GridView.builder(
               padding: const EdgeInsets.all(8.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+                crossAxisCount: 3,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
                 childAspectRatio: 0.8,
@@ -146,14 +146,14 @@ class _DoctorPageState extends State<DoctorPage> {
                       children: [
                         Image.asset(
                           item['icon']!,
-                          height: 50,
-                          width: 50,
+                          height: 70,
+                          width: 70,
                         ),
                         const SizedBox(height: 15),
                         Text(
                           item['title']!,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 14,fontFamily: 'textFont',fontWeight: FontWeight.bold,),
+                          style: const TextStyle(fontSize: 15,fontFamily: 'textFont',fontWeight: FontWeight.bold,),
                         ),
                       ],
                     ),

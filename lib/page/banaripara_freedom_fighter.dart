@@ -14,7 +14,10 @@ class _BanariparaFreedomFighterState extends State<BanariparaFreedomFighter> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        title: const Text("আমাদের বানারীপাড়া"),
+          title: const Text(
+            "আমাদের বানারীপাড়া",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
     backgroundColor: Colors.green,
     ),
     drawer: const AppDrawer(),

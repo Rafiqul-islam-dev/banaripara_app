@@ -62,7 +62,10 @@ class _BanariparaSchoolCollegeState extends State<BanariparaSchoolCollege> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("আমাদের বানারীপাড়া"),
+        title: const Text(
+          "আমাদের বানারীপাড়া",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.green,
       ),
       drawer: const AppDrawer(),
@@ -96,49 +99,49 @@ class _BanariparaSchoolCollegeState extends State<BanariparaSchoolCollege> {
                     DataColumn(
                       label: Text(
                         'নং',
-                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),
+                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 18),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'শিক্ষা প্রতিষ্ঠানের নাম',
-                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),
+                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 18),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'EIIN',
-                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),
+                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 18),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'প্রতিষ্ঠান প্রধানের নাম',
-                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),
+                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 18),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'মোবাইল নম্বর',
-                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),
+                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 18),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'ইউনিয়ন/পৌর',
-                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),
+                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 18),
                       ),
                     ),
                   ],
                   rows: schoolData.map((data) {
                     return DataRow(
                       cells: [
-                        DataCell(Text(data['no']!,  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20))),
-                        DataCell(Text(data['name']!, style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),)),
-                        DataCell(Text(data['eiin']!, style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),)),
-                        DataCell(Text(data['principal']!,  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),)),
-                        DataCell(Text(data['mobile']!,  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),)),
-                        DataCell(Text(data['location']!,  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 20),)),
+                        DataCell(Text(data['no']!,  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 16))),
+                        DataCell(Text(data['name']!, style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 16),)),
+                        DataCell(Text(data['eiin']!, style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 16),)),
+                        DataCell(Text(data['principal']!,  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 16),)),
+                        DataCell(Text(data['mobile']!,  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 16),)),
+                        DataCell(Text(data['location']!,  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'textFont',fontSize: 16),)),
                       ],
                     );
                   }).toList(),
